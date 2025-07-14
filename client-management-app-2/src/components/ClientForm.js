@@ -1,66 +1,90 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import './ClientForm.css';
 
 function ClientForm() {
-  const [client, setClient] = useState({ name: "", email: "", phone: "" });
-  const [errors, setErrors] = useState({});
-
-  const validate = () => {
-    let errors = {};
-    if (!client.name.trim()) errors.name = "Name is required";
-    if (!client.email.includes("@")) errors.email = "Valid email is required";
-    if (!client.phone.match(/^[0-9]{10}$/)) errors.phone = "Enter a 10-digit phone number";
-    return errors;
-  };
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    address: '',
+    password: '',
+    repeatPassword: '',
+  });
 
   const handleChange = (e) => {
-    setClient({ ...client, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const formErrors = validate();
-    setErrors(formErrors);
-
-    if (Object.keys(formErrors).length === 0) {
-      try {
-        await axios.post("http://localhost:3001/clients", client);
-        alert("Client added successfully!");
-        setClient({ name: "", email: "", phone: "" });
-      } catch (error) {
-        alert("Error adding client");
-      }
-    }
+    console.log('Client Data:', formData);
+    // Add API call here
+    setFormData({
+      name: '',
+      email: '',
+      address: '',
+      password: '',
+      repeatPassword: '',
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="name"
-        value={client.name}
-        onChange={handleChange}
-        placeholder="Name"
-      />
-      {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
+    <div className="client-form">
+      <h2>Create a Client</h2>
+      <p>Please fill in this form to create a client.</p>
+      <form onSubmit={handleSubmit}>
+        <label>Name</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
 
-      <input
-        name="email"
-        value={client.email}
-        onChange={handleChange}
-        placeholder="Email"
-      />
-      {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
 
-      <input
-        name="phone"
-        value={client.phone}
-        onChange={handleChange}
-        placeholder="Phone"
-      />
-      {errors.phone && <p style={{ color: "red" }}>{errors.phone}</p>}
+        <label>Address</label>
+        <input
+          type="text"
+          name="address"
+          placeholder="Enter Address"
+          value={formData.address}
+          onChange={handleChange}
+          required
+        />
 
-      <button type="submit">Add Client</button>
-    </form>
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+
+        <label>Repeat Password</label>
+        <input
+          type="password"
+          name="repeatPassword"
+          placeholder="Repeat Password"
+          value={formData.repeatPassword}
+          onChange={handleChange}
+          required
+        />
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
   );
 }
 

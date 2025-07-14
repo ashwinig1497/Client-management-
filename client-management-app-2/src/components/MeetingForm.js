@@ -1,31 +1,36 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import './Form.css';
 
 function MeetingForm() {
-  const [meeting, setMeeting] = useState({ clientId: "", date: "", purpose: "" });
+  const [meetingData, setMeetingData] = useState({
+    topic: '',
+    people: '',
+    startTime: '',
+  });
 
   const handleChange = (e) => {
-    setMeeting({ ...meeting, [e.target.name]: e.target.value });
+    setMeetingData({...meetingData, [e.target.name]: e.target.value});
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      await axios.post("http://localhost:5000/meetings", meeting);
-      alert("Meeting scheduled successfully!");
-      setMeeting({ clientId: "", date: "", purpose: "" });
-    } catch (error) {
-      alert("Error scheduling meeting");
-    }
+    console.log('Meeting Scheduled:', meetingData);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input name="clientId" value={meeting.clientId} onChange={handleChange} placeholder="Client ID" required />
-      <input name="date" type="datetime-local" value={meeting.date} onChange={handleChange} required />
-      <input name="purpose" value={meeting.purpose} onChange={handleChange} placeholder="Purpose" required />
-      <button type="submit">Schedule Meeting</button>
-    </form>
+    <div className="form-section">
+      <h3>Create a Meeting Schedule</h3>
+      <form onSubmit={handleSubmit}>
+        <label>Meeting Topic</label>
+        <input type="text" name="topic" placeholder="Enter Meeting Topic" onChange={handleChange} required />
+
+        <label>Number of People</label>
+        <input type="number" name="people" placeholder="Enter number of people" onChange={handleChange} required />
+
+        <label>Start Time</label>
+        <input type="datetime-local" name="startTime" onChange={handleChange} required />
+      </form>
+    </div>
   );
 }
 

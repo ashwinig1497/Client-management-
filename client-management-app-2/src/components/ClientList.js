@@ -5,7 +5,7 @@ function ClientList() {
   const [clients, setClients] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/clients").then((res) => {
+    axios.get("http://localhost:3001/clients").then((res) => {
       setClients(res.data);
     });
   }, []);
